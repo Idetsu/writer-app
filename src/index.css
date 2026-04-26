@@ -75,6 +75,7 @@ body {
   justify-content: space-between;
   padding: 0 20px;
   background-color: var(--bg-panel);
+  flex-shrink: 0;
 }
 
 .search-input {
@@ -97,7 +98,7 @@ body {
   font-weight: bold;
 }
 
-/* Character Grid */
+/* Content Views */
 .content-wrapper {
   padding: 20px;
   overflow-y: auto;
@@ -143,15 +144,39 @@ body {
   margin-bottom: 10px;
 }
 
+/* Common UI */
+.primary-btn {
+  padding: 10px 15px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.primary-btn:hover {
+  background-color: #2563eb;
+}
+
+.list-card {
+  transition: background 0.2s;
+}
+.list-card:hover {
+  background-color: #2d2d2d !important;
+}
+
 /* Right Panel */
 .right-panel {
-  width: 300px;
+  width: 320px;
   background-color: var(--bg-panel);
   border-left: 1px solid var(--border-color);
   padding: 20px;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  flex-shrink: 0;
 }
 
 .panel-header {

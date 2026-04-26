@@ -1,6 +1,9 @@
 export function CharacterGrid({ characters, onSelectCharacter, onCreateNew }) {
   return (
     <div className="content-wrapper">
+      <div className="list-header" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+        <h2>Personajes</h2>
+      </div>
       <div className="character-grid">
         {characters.map(char => (
           <div 
