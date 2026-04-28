@@ -313,7 +313,7 @@ button, input, textarea, select {
 
 .search-input {
   width: 100%;
-  padding: 10px 16px 10px 44px;
+  padding: 10px 44px 10px 44px;
   border-radius: 999px;
   border: 1px solid rgba(148,163,184,0.5);
   background: #ffffff;
@@ -332,16 +332,26 @@ button, input, textarea, select {
   box-shadow: 0 2px 8px rgba(37,99,235,0.15);
 }
 
-.search-icon-button {
+.search-icon-left {
   position: absolute;
-  left: 12px;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #64748b;
+  font-size: 1.05rem;
+  pointer-events: none;
+}
+
+.search-menu-button {
+  position: absolute;
+  right: 12px;
   top: 50%;
   transform: translateY(-50%);
   border: none;
   background: transparent;
   color: #64748b;
   cursor: pointer;
-  font-size: 1.05rem;
+  font-size: 1.25rem;
   padding: 8px;
   line-height: 1;
 }
@@ -453,6 +463,21 @@ button, input, textarea, select {
   justify-content: flex-end;
   gap: 12px;
   flex-wrap: wrap;
+}
+
+.delete-btn {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+.delete-btn:hover {
+  background: #dc2626;
+}
+
+.edit-modal {
+  width: min(560px, 100%);
+  display: flex;
+  justify-content: center;
 }
 
 .secondary-btn,

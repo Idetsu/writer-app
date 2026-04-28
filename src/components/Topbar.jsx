@@ -41,6 +41,7 @@ export function Topbar() {
     <header className="topbar">
       <div className="topbar-content">
         <div className="search-wrapper" ref={menuRef}>
+          <span className="search-icon-left" aria-hidden="true">🔍</span>
           <input
             type="text"
             className="search-input"
@@ -49,10 +50,10 @@ export function Topbar() {
           <button
             type="button"
             onClick={() => setMenuOpen(prev => !prev)}
-            className="search-icon-button"
-            title="Buscar"
+            className="search-menu-button"
+            title="Menú"
           >
-            🔍
+            ☰
           </button>
           {menuOpen && (
             <div className="popover-panel" style={{ right: 0, top: '100%' }}>

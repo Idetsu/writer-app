@@ -228,6 +228,36 @@ export default function App() {
     setBookModalOpen(false);
   };
 
+  const handleDeleteBook = () => {
+    setBooks(prev => {
+      const next = prev.filter(book => book.id !== bookForm.id);
+      if (next.length === 0) {
+        const fallbackId = Date.now();
+        const fallbackDocId = fallbackId + 1;
+        const fallback = {
+          id: fallbackId,
+          title: 'Primer Libro del Autor',
+          color: '#60A5FA',
+          description: '',
+          genre: '',
+          documents: [{ id: fallbackDocId, title: 'Sin título', blocks: [{ id: fallbackDocId + 1, content: '' }] }],
+          notes: [],
+          characters: [],
+          chapters: [],
+          folders: [],
+          activeDocumentId: fallbackDocId,
+        };
+        setActiveBookId(fallbackId);
+        return [fallback];
+      }
+      if (activeBookId === bookForm.id) {
+        setActiveBookId(next[0].id);
+      }
+      return next;
+    });
+    setBookModalOpen(false);
+  };
+
   const handleSelectBook = (bookId) => {
     if (bookId === activeBookId) return;
     setActiveBookId(bookId);
@@ -427,6 +457,9 @@ export default function App() {
               />
             </label>
             <div className="modal-actions">
+              {bookForm.id && (
+                <button type="button" className="delete-btn" onClick={handleDeleteBook}>Eliminar libro</button>
+              )}
               <button type="button" className="secondary-btn" onClick={handleCloseBookModal}>Cancelar</button>
               <button type="button" className="primary-btn" onClick={handleCreateBook}>{bookForm.id ? 'Guardar' : 'Crear libro'}</button>
             </div>
@@ -512,26 +545,30 @@ export default function App() {
             />
           )}
           
-          {isPanelOpen && (activeTab === 'Personajes' || activeTab === 'Notas' || activeTab === 'Documento') && activeEntity && (
-            <RightPanel 
-              activeEntity={activeEntity}
-              entityType={
-                activeEntity._refType ||
-                (activeTab === 'Personajes' ? 'character' : 'note')
-              }
-              characters={characters}
-              notes={notes}
-              chapters={chapters}
-              onClose={handleClosePanel}
-              onChange={handleChangeEntity}
-              onSave={handleSaveEntity}
-              onDelete={handleDeleteEntity}
-              onLinkNote={handleLinkNote}
-              onViewLinkedCharacter={handleViewLinkedCharacter}
-              onOpenLinkedNote={handleOpenLinkedNote}
-              onOpenChapter={handleOpenChapterFromCharacter}
-            />
-          )}
+          {isPanelOpen && activeEntity && (
+          <div className="modal-overlay">
+            <div className="edit-modal">
+              <RightPanel 
+                activeEntity={activeEntity}
+                entityType={
+                  activeEntity._refType ||
+                  (activeTab === 'Personajes' ? 'character' : 'note')
+                }
+                characters={characters}
+                notes={notes}
+                chapters={chapters}
+                onClose={handleClosePanel}
+                onChange={handleChangeEntity}
+                onSave={handleSaveEntity}
+                onDelete={handleDeleteEntity}
+                onLinkNote={handleLinkNote}
+                onViewLinkedCharacter={handleViewLinkedCharacter}
+                onOpenLinkedNote={handleOpenLinkedNote}
+                onOpenChapter={handleOpenChapterFromCharacter}
+              />
+            </div>
+          </div>
+        )}
           </div>
         </div>
       </main>

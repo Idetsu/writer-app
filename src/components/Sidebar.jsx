@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 export function Sidebar({
   activeTab,
@@ -13,17 +13,30 @@ export function Sidebar({
   onSelectDocument,
 }) {
   const [bookMenuOpen, setBookMenuOpen] = useState(false);
+  const menuRef = useRef(null);
   const tabs = ['Capítulos', 'Personajes', 'Notas'];
   const activeBook = books.find(book => book.id === activeBookId) || books[0] || { title: 'Libro', color: '#60A5FA' };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setBookMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   return (
     <aside className="sidebar">
       <div className="sidebar-header">
-        <button
-          type="button"
-          className="book-selector"
-          onClick={() => setBookMenuOpen(prev => !prev)}
-        >
+        <div ref={menuRef} style={{ width: '100%' }}>
+          <button
+            type="button"
+            className="book-selector"
+            onClick={() => setBookMenuOpen(prev => !prev)}
+          >
           <span className="book-icon" style={{ background: activeBook.color || '#60A5FA' }}>
             {activeBook.title?.charAt(0)?.toUpperCase() || 'L'}
           </span>
@@ -71,6 +84,7 @@ export function Sidebar({
             ))}
           </div>
         )}
+      </div>
 
         <button className="button-primary create-book-btn" onClick={onCreateBook}>
           Crear libro +
