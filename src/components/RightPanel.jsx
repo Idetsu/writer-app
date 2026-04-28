@@ -61,7 +61,7 @@ export function RightPanel({ activeEntity, entityType, characters, notes, chapte
                     <div
                       key={note.id}
                       onClick={() => onOpenLinkedNote(note.id)}
-                      style={{ padding: '6px 10px', marginBottom: '6px', background: '#2a2a2a', borderRadius: '4px', cursor: 'pointer', fontSize: '0.85rem', color: '#e0e0e0' }}
+                      style={{ padding: '6px 10px', marginBottom: '6px', background: '#f3f4f6', border: '1px solid #d1d5db', borderRadius: '4px', cursor: 'pointer', fontSize: '0.85rem', color: '#111827' }}
                     >
                       📝 {note.title || 'Nota sin título'}
                     </div>
@@ -81,7 +81,7 @@ export function RightPanel({ activeEntity, entityType, characters, notes, chapte
                     <div
                       key={ch.id}
                       onClick={() => onOpenChapter(ch.id)}
-                      style={{ padding: '6px 10px', marginBottom: '6px', background: '#2a2a2a', borderRadius: '4px', cursor: 'pointer', fontSize: '0.85rem', color: '#e0e0e0' }}
+                      style={{ padding: '6px 10px', marginBottom: '6px', background: '#f3f4f6', border: '1px solid #d1d5db', borderRadius: '4px', cursor: 'pointer', fontSize: '0.85rem', color: '#111827' }}
                     >
                       📖 {ch.title || 'Capítulo sin título'}
                     </div>
@@ -121,7 +121,7 @@ export function RightPanel({ activeEntity, entityType, characters, notes, chapte
               {activeEntity.linkedCharacterId ? (() => {
                 const linkedChar = characters ? characters.find(c => c.id === activeEntity.linkedCharacterId) : null;
                 return (
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '6px 10px', background: '#2a2a2a', borderRadius: '4px', fontSize: '0.85rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '6px 10px', background: '#f3f4f6', border: '1px solid #d1d5db', borderRadius: '4px', fontSize: '0.85rem' }}>
                     <span
                       onClick={() => onViewLinkedCharacter(activeEntity.linkedCharacterId)}
                       style={{ color: '#60A5FA', cursor: 'pointer' }}

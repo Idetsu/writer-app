@@ -73,7 +73,9 @@ export default function App() {
   const [activeDocumentId, setActiveDocumentId] = useState(activeBook.activeDocumentId || (activeBook.documents?.[0]?.id || null));
 
   const [activeEntity, setActiveEntity] = useState(null); 
+  const [originalEntity, setOriginalEntity] = useState(null);
   const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [confirmCloseOpen, setConfirmCloseOpen] = useState(false);
   const [activeChapterId, setActiveChapterId] = useState(null);
   const [bookModalOpen, setBookModalOpen] = useState(false);
   const [bookForm, setBookForm] = useState({ id: null, title: '', description: '', genre: '', color: '#60A5FA' });
@@ -268,27 +270,79 @@ export default function App() {
 
   // Right Panel interactions
   const handleSelectEntity = (entity) => {
-    setActiveEntity({ ...entity }); // clone for local editing
+    const cloned = { ...entity };
+    setActiveEntity(cloned); // clone for local editing
+    setOriginalEntity(cloned);
     setIsPanelOpen(true);
   };
 
   const handleCreateNewEntity = () => {
-    if (activeTab === 'Personajes') {
-      setActiveEntity({ name: "", color: "#888888", traits: [], description: "" });
-    } else if (activeTab === 'Notas') {
-      setActiveEntity({ title: "", content: "" });
-    }
+    const newEntity = activeTab === 'Personajes'
+      ? { name: "", color: "#888888", traits: [], description: "" }
+      : { title: "", content: "" };
+
+    setActiveEntity(newEntity);
+    setOriginalEntity(newEntity);
     setIsPanelOpen(true);
   };
 
   const handleClosePanel = () => {
     setIsPanelOpen(false);
     setActiveEntity(null);
+    setOriginalEntity(null);
+    setConfirmCloseOpen(false);
   };
 
   const handleChangeEntity = (field, value) => {
     setActiveEntity(prev => ({ ...prev, [field]: value }));
   };
+
+  const attemptClosePanel = () => {
+    if (!activeEntity || !originalEntity) {
+      handleClosePanel();
+      return;
+    }
+
+    const isDirty = JSON.stringify(activeEntity) !== JSON.stringify(originalEntity);
+    if (isDirty) {
+      setConfirmCloseOpen(true);
+      return;
+    }
+
+    handleClosePanel();
+  };
+
+  const confirmCloseSave = () => {
+    handleSaveEntity();
+    setConfirmCloseOpen(false);
+  };
+
+  const confirmCloseKeepEditing = () => {
+    setConfirmCloseOpen(false);
+  };
+
+  const confirmCloseDiscard = () => {
+    setActiveEntity(originalEntity);
+    handleClosePanel();
+    setConfirmCloseOpen(false);
+  };
+
+  useEffect(() => {
+    const handleEscape = (event) => {
+      if (event.key === 'Escape') {
+        if (confirmCloseOpen) {
+          setConfirmCloseOpen(false);
+          return;
+        }
+        if (isPanelOpen) {
+          attemptClosePanel();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [confirmCloseOpen, isPanelOpen, activeEntity, originalEntity]);
 
   const handleSaveEntity = () => {
     if (activeTab === 'Personajes') {
@@ -546,8 +600,8 @@ export default function App() {
           )}
           
           {isPanelOpen && activeEntity && (
-          <div className="modal-overlay">
-            <div className="edit-modal">
+          <div className="modal-overlay" onClick={attemptClosePanel}>
+            <div className="edit-modal" onClick={(e) => e.stopPropagation()}>
               <RightPanel 
                 activeEntity={activeEntity}
                 entityType={
@@ -566,6 +620,19 @@ export default function App() {
                 onOpenLinkedNote={handleOpenLinkedNote}
                 onOpenChapter={handleOpenChapterFromCharacter}
               />
+            </div>
+          </div>
+        )}
+        {confirmCloseOpen && (
+          <div className="modal-overlay">
+            <div className="confirm-modal" onClick={(e) => e.stopPropagation()}>
+              <h3>Hay cambios sin guardar</h3>
+              <p>¿Quieres guardar los cambios, mantenerlos en edición o salir sin guardar?</p>
+              <div className="confirm-modal-actions">
+                <button type="button" className="primary-btn" onClick={confirmCloseSave}>Guardar</button>
+                <button type="button" className="secondary-btn" onClick={confirmCloseKeepEditing}>Mantener</button>
+                <button type="button" className="delete-btn" onClick={confirmCloseDiscard}>Salir sin guardar</button>
+              </div>
             </div>
           </div>
         )}

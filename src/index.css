@@ -78,6 +78,15 @@ button, input, textarea, select {
   text-align: left;
 }
 
+.book-selector .book-icon {
+  width: 28px;
+  height: 28px;
+}
+
+.book-selector h2 {
+  font-size: 17px;
+}
+
 .book-icon,
 .book-dropdown-icon {
   width: 36px;
@@ -736,6 +745,55 @@ button, input, textarea, select {
 .panel-field textarea {
   min-height: 140px;
   resize: vertical;
+}
+
+.edit-modal {
+  width: min(820px, 100%);
+  display: flex;
+  justify-content: center;
+}
+
+.edit-modal .right-panel {
+  min-width: 560px;
+  max-width: 760px;
+  width: 100%;
+  max-height: 88vh;
+}
+
+.confirm-modal {
+  width: min(420px, 100%);
+  background: #ffffff;
+  border-radius: 22px;
+  padding: 26px;
+  box-shadow: 0 24px 60px rgba(15,23,42,0.18);
+}
+
+.confirm-modal h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.25rem;
+  color: #111827;
+}
+
+.confirm-modal p {
+  margin: 0 0 18px 0;
+  color: #475569;
+  line-height: 1.5;
+}
+
+.confirm-modal-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.delete-btn {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+.delete-btn:hover {
+  background: #dc2626;
 }
 
 .character-card,
